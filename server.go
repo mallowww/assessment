@@ -2,13 +2,18 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+
+	_ "github.com/lib/pq"
 )
 
 // ระบบสามารถจัดเก็บข้อมูล เรื่อง(title), ยอดค่าใช้จ่าย(amount), บันทึกย่อ(note) และ หมวดหมู่(tags)
@@ -20,19 +25,89 @@ type Expense struct {
 	Tags   []string `json:"หมวดหมู่"`
 }
 
+// ไว้เก็บ err msg
+type Err struct {
+	Message string `json:"message"`
+}
+
+// type CustomerHandler struct {
+// 	DB *sql.DB
+// }
+
+var db *sql.DB
+
+// var expenses = []Expense{}
+
+func InitDB() {
+	url := os.Getenv("DATABASE_URL")
+	db, err := sql.Open("postgres", url)
+	if err != nil {
+		log.Fatal("can't connect to database", err)
+	}
+	defer db.Close()
+
+	// convert go struct to table - https://cheikhshift.github.io/struct-to-sql/
+	createTable := `CREATE TABLE IF NOT EXISTS expenses (
+		id SERIAL PRIMARY KEY,
+		title TEXT, 
+		amount FLOAT, 
+		note TEXT, 
+		tags VARCHAR
+		);`
+	_, err = db.Exec(createTable)
+	if err != nil {
+		log.Fatal("can't create table", err)
+	}
+}
+
+// ดึงข้อมูลการใช้จ่ายทั้งหมด
+func GetExpensesHandler(c echo.Context) error {
+	return c.JSON(http.StatusOK, "OK")
+
+}
+
+// ดึงข้อมูลการใช้จ่ายทีละรายการ
+func GetExpensesIdHandler(c echo.Context) error {
+	return c.JSON(http.StatusOK, "OK")
+
+}
+
+// เพิ่มประวัติการใช้จ่ายใหม่ได้
+func CreateExpensesHandler(c echo.Context) error {
+	return c.JSON(http.StatusOK, "OK")
+
+}
+
+// ปรับเปลี่ยน/แก้ไข ข้อมูลของการใช้จ่ายได้
+func UpdateExpensesHandler(c echo.Context) error {
+	return c.JSON(http.StatusOK, "OK")
+
+}
+
+func healthHandler(c echo.Context) error {
+	return c.JSON(http.StatusOK, "OK")
+}
+
 func main() {
 	e := echo.New()
+	InitDB()
 
-	e.GET("/nanglen", func(c echo.Context) error {
-		// time.Sleep(5 * time.Second)
-		return c.JSON(200, nil)
-	})
+	// Middleware
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
 
-	// เอามาดู cli สั่งปิด server
-	e.GET("/stopServer", stopServer)
+	// Init handler
+	// h := CustomerHandler{}
+	// h.Initialize()
+
+	// Routing
+	e.GET("/expenses", GetExpensesHandler)
+	e.GET("/expenses/:id", GetExpensesIdHandler)
+	e.POST("/expenses", CreateExpensesHandler)
+	e.PUT("/expenses/:id", UpdateExpensesHandler)
+	e.GET("/healthCheck", healthHandler)
 
 	go func() {
-		// err := e.Logger.Fatal(e.Start(":2565"))
 		err := e.Start(":2565")
 		if err != nil {
 			fmt.Println("เซิฟปิดตัวลงด้วยเหตุผล - ", err)
@@ -48,12 +123,4 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-}
-
-func stopServer(c echo.Context) error {
-	err := c.Echo().Shutdown(context.Background())
-	if err != nil || err == http.ErrServerClosed {
-		c.Echo().Logger.Fatal("shutting down this server")
-	}
-	return nil
 }
