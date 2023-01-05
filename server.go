@@ -77,18 +77,12 @@ func UpdateExpensesHandler(c echo.Context) error {
 	}
 
 	id := c.Param("id")
-	// statement, err := db.Prepare("UPDATE expenses SET title=$1, amount=$2, note=$3, tags=$4 WHERE id=$5")
-	statement, err := db.Prepare("UPDATE expenses SET title=$2, amount=$3, note=$4, tags=$5 WHERE id=$1")
+	statement, err := db.Exec("UPDATE expenses SET title=$2, amount=$3, note=$4, tags=$5 WHERE id=$1", &e.ID, &e.Title, &e.Amount, &e.Note, pq.Array(&e.Tags))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, Err{Message: "can't prepare update expense statement" + err.Error()})
 	}
 
-	row, err := statement.Exec(&e.ID, &e.Title, &e.Amount, &e.Note, pq.Array(&e.Tags))
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, Err{Message: "can't execute statement" + err.Error()})
-	}
-
-	_, err = row.RowsAffected()
+	_, err = statement.RowsAffected()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, Err{Message: "expense rows doesn't affected row even after update statement" + err.Error()})
 	}
