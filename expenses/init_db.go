@@ -3,6 +3,7 @@ package expenses
 import (
 	"database/sql"
 	"log"
+	"os"
 
 	_ "github.com/lib/pq"
 )
@@ -13,12 +14,13 @@ var err error
 func InitDB(url string) {
 	// InitDB()
 	// var err error
-	// url = os.Getenv("DATABASE_URL")
+	url = os.Getenv("DATABASE_URL")
 	db, err = sql.Open("postgres", url)
 	if err != nil {
 		log.Fatal("can't connect to database", err)
 	}
 	defer db.Close()
+	CreateTable()
 }
 
 func CreateTable() {

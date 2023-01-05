@@ -9,8 +9,7 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	"github.com/labstack/echo"
 	"github.com/mallowww/assessment/expenses"
 )
 
@@ -20,6 +19,13 @@ var err error
 
 func healthHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, "OK")
+}
+
+func InitRoutes(e *echo.Echo) {
+	e.GET("/expenses", expenses.GetExpensesHandler)
+	e.GET("/expenses/:id", expenses.GetExpensesIdHandler)
+	e.POST("/expenses", expenses.CreateExpensesHandler)
+	e.PUT("/expenses/:id", expenses.UpdateExpensesHandler)
 }
 
 func main() {
@@ -34,10 +40,11 @@ func main() {
 	// e.Use(middleware.CORS())
 
 	// Middleware
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
+	// e.Use(middleware.Logger())
+	// e.Use(middleware.Recover())
 
 	// Routing
+	// InitRoutes()
 	e.GET("/expenses", expenses.GetExpensesHandler)
 	e.GET("/expenses/:id", expenses.GetExpensesIdHandler)
 	e.POST("/expenses", expenses.CreateExpensesHandler)
