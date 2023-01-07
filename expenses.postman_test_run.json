@@ -1,0 +1,197 @@
+{
+	"id": "eff16303-60b6-40c0-a26e-f281caf04590",
+	"name": "expenses",
+	"timestamp": "2023-01-07T01:50:07.255Z",
+	"collection_id": "16038217-8b1b4144-33fa-4f4a-8069-7e8844866983",
+	"folder_id": 0,
+	"environment_id": "16038217-7a791cac-36f1-498c-92f7-a11887863aac",
+	"totalPass": 8,
+	"totalFail": 1,
+	"results": [
+		{
+			"id": "66eabcb2-ffc4-4ebd-98a6-40ea9c373a19",
+			"name": "create expense",
+			"url": "http://localhost:2565/expenses",
+			"time": 232,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"should response success(201) and object of customer": true,
+				"Status code is 201 or 202": true
+			},
+			"testPassFailCounts": {
+				"should response success(201) and object of customer": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status code is 201 or 202": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				232
+			],
+			"allTests": [
+				{
+					"should response success(201) and object of customer": true,
+					"Status code is 201 or 202": true
+				}
+			]
+		},
+		{
+			"id": "32c4af5f-37eb-485e-b23e-272a47904ec6",
+			"name": "get latest expense (expenses/:id)",
+			"url": "http://localhost:2565/expenses/8",
+			"time": 226,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"should response object of latest expense": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"should response object of latest expense": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				226
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"should response object of latest expense": true
+				}
+			]
+		},
+		{
+			"id": "82e3edb4-f9f1-4a92-b93c-68aec8a69026",
+			"name": "update latest expenses",
+			"url": "http://localhost:2565/expenses/8",
+			"time": 243,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"should response success(200) and object of customer": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"should response success(200) and object of customer": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				243
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"should response success(200) and object of customer": true
+				}
+			]
+		},
+		{
+			"id": "fdfdb492-ce09-4cda-a24b-b950c57b73cf",
+			"name": "get all expenses",
+			"url": "http://localhost:2565/expenses",
+			"time": 221,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"should response success(200) and object of latest expense": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"should response success(200) and object of latest expense": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				221
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"should response success(200) and object of latest expense": true
+				}
+			]
+		},
+		{
+			"id": "abdb0e27-2652-4b4b-aed1-5eacbafbf4e5",
+			"name": "Bonus middleware check Autorization",
+			"url": "http://localhost:2565/expenses",
+			"time": 230,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 401 Unauthorized": false
+			},
+			"testPassFailCounts": {
+				"Status code is 401 Unauthorized": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				230
+			],
+			"allTests": [
+				{
+					"Status code is 401 Unauthorized": false
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 1152,
+	"collection": {
+		"requests": [
+			{
+				"id": "66eabcb2-ffc4-4ebd-98a6-40ea9c373a19",
+				"method": "POST"
+			},
+			{
+				"id": "32c4af5f-37eb-485e-b23e-272a47904ec6",
+				"method": "GET"
+			},
+			{
+				"id": "82e3edb4-f9f1-4a92-b93c-68aec8a69026",
+				"method": "PUT"
+			},
+			{
+				"id": "fdfdb492-ce09-4cda-a24b-b950c57b73cf",
+				"method": "GET"
+			},
+			{
+				"id": "abdb0e27-2652-4b4b-aed1-5eacbafbf4e5",
+				"method": "GET"
+			}
+		]
+	}
+}
